@@ -8,6 +8,7 @@ namespace SU.DAL.Model
 {
     public class Account
     {
+
         public Account() :this(0)
         {
             
@@ -23,6 +24,7 @@ namespace SU.DAL.Model
         }
         public Account(int Id, DateTime CreateDate, double Balance)
         {
+
             this.Id = Id;
             this.CreateDate = CreateDate;
             this.Balance = Balance;
@@ -54,5 +56,6 @@ namespace SU.DAL.Model
         public DateTime ExpireDate { get; set; }
         public int AccountType { get; set; }
         public int Currency { get; set; }//398
+        public int ClientId { get; set; }
     }
 }
