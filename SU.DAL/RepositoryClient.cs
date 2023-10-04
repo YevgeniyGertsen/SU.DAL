@@ -6,49 +6,117 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LiteDB;
+using System.CodeDom;
 
 namespace SU.DAL
 {
     public class RepositoryClient
     {
+        private readonly string path="";
+        public RepositoryClient(string path)
+        {
+            if(string.IsNullOrWhiteSpace(path))
+                throw new ArgumentNullException("Путь к БД должен быть заполнен");
+
+            this.path = path;
+        }
+
         /// <summary>
         /// Метод котррый возвращает список клиентов
         /// </summary>
         /// <returns></returns>
-        public List<Client> GetAllClients()
+        public ReturnResultClient GetAllClients()
         {
-            List<Client> clients = null;
+            ReturnResultClient result = new ReturnResultClient();
 
-            using (var db = new LiteDatabase(@"C:\Temp\MyData.db"))
+            try
             {
-                clients = db.GetCollection<Client>("Client")
-                    .FindAll()
-                    .ToList();
+                using (var db = new LiteDatabase(path))
+                {
+                    result.Clients = db.GetCollection<Client>("Client").FindAll().ToList();
+                }
             }
+            catch (LiteException ex)
+               when(string.IsNullOrWhiteSpace(path))
+            {
+                result.IsSeccess = false;
+                result.Exception = ex;
+            }
+            catch (Exception ex)
+            {
+                result.IsSeccess = false;
+                result.Exception = ex;
+            }          
 
-            return clients;
+            return result;
         }
 
-        public Client GetClient(int Id)
+        public ReturnResultClient GetClient(int Id)
         {
-            Client client = null;
-            using (var db = new LiteDatabase(@"C:\Temp\MyData.db"))
+            ReturnResultClient result = new ReturnResultClient();
+
+            try
             {
-                client = db.GetCollection<Client>("Client")
-                    .FindById(Id);
+                using (var db = new LiteDatabase(path))
+                {
+                    result.Client = db.GetCollection<Client>("Client")
+                        .FindById(Id);
+                }
+
             }
-            return client;
+            catch (Exception ex)
+            {
+                result.IsSeccess = false;
+                result.Exception = ex;
+            }
+
+            return result;
         }
 
-        public bool CreateClient(Client client)
+        public ReturnResultClient GetClient(string Email, string Password)
         {
-            using (var db = new LiteDatabase(@"C:\Temp\MyData.db"))
+            ReturnResultClient result = new ReturnResultClient();
+
+            try
             {
-                var clients = db.GetCollection<Client>("Client");
-                clients.Insert(client);
+                using (LiteDatabase db = new LiteDatabase(path))
+                {
+                    result.Clients = db.GetCollection<Client>().FindAll().ToList();
+
+                    result.Client = result.Clients.First(f => f.Email == Email & f.Password == Password);
+
+                }
+            }
+            catch (Exception ex) {
+                result.IsSeccess = false;
+                result.Exception = ex;
+            }
+            return result;
+        }
+        public ReturnResultClient CreateClient(Client client)
+        {
+            ReturnResultClient result = new ReturnResultClient();
+
+            try
+            {
+                if (client == null)
+                    throw new Exception("Модель клиента пустая");
+
+                using (var db = new LiteDatabase(path))
+                {
+                    var clients = db.GetCollection<Client>("Client");
+                    clients.Insert(client);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result.IsSeccess = false;
+                result.Exception = ex;
             }
 
-            return true;
+
+            return result;
         }
     }
 }

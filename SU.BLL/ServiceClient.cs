@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using SU.DAL;
@@ -11,10 +12,38 @@ namespace SU.BLL
 {
     public class ServiceClient
     {
-        public bool RegisterClient(Client client)
+        private readonly string path = "";
+        public ServiceClient(string path)
         {
-            RepositoryClient repository = new RepositoryClient();
-           return  repository.CreateClient(client);           
+            this.path = path;
+        }
+
+        public (string message, bool result) RegisterClient(Client client)
+        {
+            RepositoryClient repository = new RepositoryClient(path);
+
+            var result = repository.CreateClient(client);
+           
+            if (result.IsSeccess == true)
+                return ("", true);
+            else 
+                return ("Возникла ошибка", false);
+        }
+
+        public (string message, bool result) AuthClient(Client client)
+        {
+            RepositoryClient rep = new RepositoryClient(path);
+
+            ReturnResultClient result = rep.GetClient(client.Email, client.Password);
+            client = result.Client;
+            if (result.IsSeccess == true)
+            {
+                return ("", true);
+            }
+            else
+            {
+                return (result?.Exception.Message, result.IsSeccess);
+            }
         }
     }
 }
