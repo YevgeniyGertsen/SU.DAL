@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repository.cs" />
     <Compile Include="ReturnResultClient.cs" />
     <Compile Include="RepositoryClient.cs" />
     <Compile Include="Model\Address.cs" />

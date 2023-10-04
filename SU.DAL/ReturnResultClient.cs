@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SU.DAL
 {
-    public class ReturnResultClient
+    public class ReturnResult<T>
     {
         public bool IsSeccess { get; set; } = true;
         public Exception Exception { get; set; }
-        public Client Client { get; set; }
-        public List<Client> Clients { get; set; }
+        public T Data { get; set; }
+        public List<T> ListData { get; set; }
     }
 }
