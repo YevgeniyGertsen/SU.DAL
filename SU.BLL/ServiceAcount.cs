@@ -28,11 +28,12 @@ namespace SU.BLL
             result = db.GetAll();
             return result.ListData.Where(w=>w.ClientId == ClientId).ToList();
         }
+
         public bool CreateAccount(Account account)
         {
+            //collSomeMethod(account)
             result = db.Create(account);
             return result.IsSeccess;
-
         }
     }
 }

@@ -1,0 +1,43 @@
+﻿<Window x:Class="SU.WpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SU.WpfApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="169*"/>
+            <ColumnDefinition Width="152*"/>
+            <ColumnDefinition Width="39*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70*"/>
+            <RowDefinition Height="57*"/>
+            <RowDefinition Height="58*"/>
+            <RowDefinition Height="71*"/>
+            <RowDefinition Height="104*"/>
+            <RowDefinition Height="74*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="1" FontSize="24" VerticalAlignment="Center"
+               HorizontalAlignment="Center" Height="42" Width="69">Login</Label>
+
+        <TextBox Grid.Row="1" Grid.Column="2"
+                 x:Name="tbxLogin" 
+                 FontSize="16" Height="30"
+                 VerticalContentAlignment="Center"/>
+        
+        <Label Grid.Row="2" Grid.Column="1" FontSize="24" VerticalAlignment="Center"
+        HorizontalAlignment="Center" Height="42" Width="69">Password</Label>
+        <PasswordBox Grid.Row="2" Grid.Column="2"
+                     FontSize="16" Height="30"
+         x:Name="tbxPassword" 
+                     VerticalContentAlignment="Center"/>
+
+        <Button x:Name="btnAuth" 
+               Click="btnAuth_Click" >Login</Button>
+    </Grid>
+</Window>

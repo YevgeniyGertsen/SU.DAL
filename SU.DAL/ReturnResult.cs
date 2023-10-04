@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SU.DAL
 {
-    public class ReturnResult<T>
+    public class ReturnResult<T> where T : class
     {
         public bool IsSeccess { get; set; } = true;
         public Exception Exception { get; set; }

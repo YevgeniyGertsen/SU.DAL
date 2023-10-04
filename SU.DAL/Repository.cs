@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 namespace SU.DAL
 {
     //Repository<Client> repo = new Repository<Client>();
-    public class Repository<T>
+    public class Repository<T> where T : class
     {
+        public T obj = default(T);
+
         private readonly string path = "";
         private ReturnResult<T> result = null;
         public Repository(string path)
