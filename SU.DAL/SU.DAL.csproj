@@ -45,8 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Repository.cs" />
-    <Compile Include="ReturnResultClient.cs" />
-    <Compile Include="RepositoryClient.cs" />
+    <Compile Include="ReturnResult.cs" />
     <Compile Include="Model\Address.cs" />
     <Compile Include="Model\Account.cs" />
     <Compile Include="Model\Client.cs" />

@@ -13,16 +13,18 @@ namespace SU.BLL
     public class ServiceClient
     {
         private readonly string path = "";
+        private Repository<Client> repo = null;
+        private ReturnResult<Client> result = null;
         public ServiceClient(string path)
         {
             this.path = path;
+            repo = new Repository<Client>(path);
+            result = new ReturnResult<Client>();
         }
 
         public (string message, bool result) RegisterClient(Client client)
         {
-            RepositoryClient repository = new RepositoryClient(path);
-
-            var result = repository.CreateClient(client);
+            var result = repo.Create(client);
            
             if (result.IsSeccess == true)
                 return ("", true);
@@ -32,10 +34,12 @@ namespace SU.BLL
 
         public (string message, bool result) AuthClient(Client client)
         {
-            RepositoryClient rep = new RepositoryClient(path);
 
-            ReturnResultClient result = rep.GetClient(client.Email, client.Password);
-            client = result.Client;
+            var clients = repo.GetAll().ListData;
+            result.Data = clients
+                .FirstOrDefault(f => f.Email == client.Email
+                && f.Password == client.Password);
+
             if (result.IsSeccess == true)
             {
                 return ("", true);
