@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SU.DAL.Model;
+using AutoMapper;
+using SU.BLL.Model;
 
 namespace SU.BLL
 {
@@ -14,25 +16,29 @@ namespace SU.BLL
         private readonly string path = "";
         private Repository<Account> db = null;
         private ReturnResult<Account> result = null;
+        private readonly IMapper _iMapper;
+
 
         public ServiceAcount(string path)
         {
             this.path = path;
-            db = new Repository<Acount>(path);
-            result = new ReturnResult<Acount>();
-
+            db = new Repository<Account>(path);
+            result = new ReturnResult<Account>();
+            _iMapper = SettingAutoMapper.Init().CreateMapper();
         }
 
-        public List<Account> GetClientAcount(int ClientId)
+        public List<AccountDTO> GetClientAcount(int ClientId)
         {
             result = db.GetAll();
-            return result.ListData.Where(w=>w.ClientId == ClientId).ToList();
+            var data = result.ListData.Where(w=>w.ClientId == ClientId).ToList();
+
+            return _iMapper.Map<List<AccountDTO>>(data);
         }
 
-        public bool CreateAccount(Account account)
+        public bool CreateAccount(AccountDTO account)
         {
             //collSomeMethod(account)
-            result = db.Create(account);
+            result = db.Create(_iMapper.Map<Account>(account));
             return result.IsSeccess;
         }
     }

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using SU.BLL.Model;
 using SU.DAL;
 using SU.DAL.Model;
 
@@ -15,16 +17,18 @@ namespace SU.BLL
         private readonly string path = "";
         private Repository<Client> repo = null;
         private ReturnResult<Client> result = null;
+        private readonly IMapper _iMapper;
         public ServiceClient(string path)
         {
             this.path = path;
             repo = new Repository<Client>(path);
             result = new ReturnResult<Client>();
+            _iMapper= SettingAutoMapper.Init().CreateMapper();
         }
 
-        public (string message, bool result) RegisterClient(Client client)
+        public (string message, bool result) RegisterClient(ClientDTO client)
         {
-            var result = repo.Create(client);
+            var result = repo.Create(_iMapper.Map<Client>(client));
            
             if (result.IsSeccess == true)
                 return ("", true);
@@ -32,7 +36,7 @@ namespace SU.BLL
                 return ("Возникла ошибка", false);
         }
 
-        public (string message, bool result) AuthClient(Client client)
+        public (string message, bool result) AuthClient(ClientDTO client)
         {
 
             var clients = repo.GetAll().ListData;
