@@ -8,22 +8,15 @@ using System.Threading.Tasks;
 using AutoMapper;
 using SU.BLL.Model;
 using SU.DAL;
+using SU.DAL.Interfaces;
 using SU.DAL.Model;
 
 namespace SU.BLL
 {
-    public class ServiceClient
+    public class ServiceClient : Service<Client>
     {
-        private readonly string path = "";
-        private Repository<Client> repo = null;
-        private ReturnResult<Client> result = null;
-        private readonly IMapper _iMapper;
-        public ServiceClient(string path)
+        public ServiceClient(string path):base(path)
         {
-            this.path = path;
-            repo = new Repository<Client>(path);
-            result = new ReturnResult<Client>();
-            _iMapper= SettingAutoMapper.Init().CreateMapper();
         }
 
         public (string message, bool result) RegisterClient(ClientDTO client)

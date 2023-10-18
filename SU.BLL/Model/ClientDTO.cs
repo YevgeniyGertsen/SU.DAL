@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SU.BLL.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,9 +42,10 @@ namespace SU.BLL.Model
             }
         }
 
+        public Gender Gender { get; set; }
         public string Iin { get; set; }
         public string PathPhoto { get; set; }
-        public string  PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public string SecretWord { get; set; }

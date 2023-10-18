@@ -1,4 +1,5 @@
 ﻿using LiteDB;
+using SU.DAL.Interfaces;
 using SU.DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,8 @@ using System.Threading.Tasks;
 namespace SU.DAL
 {
     //Repository<Client> repo = new Repository<Client>();
-    public class Repository<T> where T : class
+    public class Repository<T> : IRepository<T> 
+        where T : class
     {
         public T obj = default(T);
 

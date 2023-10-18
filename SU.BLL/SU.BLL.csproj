@@ -44,9 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Gender.cs" />
     <Compile Include="Model\AccountDTO.cs" />
     <Compile Include="Model\AddressDTO.cs" />
     <Compile Include="Model\ClientDTO.cs" />
+    <Compile Include="Service.cs" />
     <Compile Include="ServiceAcount.cs" />
     <Compile Include="ServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

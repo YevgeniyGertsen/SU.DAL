@@ -1,4 +1,6 @@
 ﻿using SU.BLL;
+using SU.BLL.Enums;
+using SU.BLL.Model;
 using SU.DAL.Model;
 using System;
 using System.Collections.Generic;
@@ -19,48 +21,65 @@ namespace SU.Online.Web
 
         static void Main(string[] args)
         {
-            Money a = new Money(500, 1);
-            Account acc = new Account();
+            Console.WriteLine("Введите действие, которое вы хотите выполнить (Авторизация, Регистрация, Выход:");
+            string input = Console.ReadLine();
 
-            var result = (decimal)a;
+            ServiceClient service = new ServiceClient(path);
+            ClientDTO client = new ClientDTO();
 
-            //Console.WriteLine("Введите действие, которое вы хотите выполнить (Авторизация, Регистрация, Выход:");
-            //string input = Console.ReadLine();
+            switch (input)
+            {
+                case "Авторизация":
+                    Console.Write("Введите емейл: ");
+                    client.Email = Console.ReadLine();
+                    Console.Write("Введите пароль: ");
+                    client.Password = Console.ReadLine();
+                    if (service.AuthClient(client).result)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("Авторизация прошла успешно. Добро пожаловать {0}", client.ShortName);
+                    }
 
-            //ServiceClient service = new ServiceClient(path);
-            //Client client = new Client();
+                    break;
 
-            //switch(input)
-            //{
-            //    case "Авторизация":
-            //        Console.Write("Введите емейл: ");
-            //        client.Email = Console.ReadLine();
-            //        Console.Write("Введите пароль: ");
-            //        client.Password = Console.ReadLine();
-            //        if(service.AuthClient(client).result)
-            //        {
-            //            Console.Clear();
-            //            Console.WriteLine("Авторизация прошла успешно. Добро пожаловать {0}", client.ShortName);
-            //        }
+                case "Регистрация":
+                    Console.Write("Введите емейл: ");
+                    client.Email = Console.ReadLine();
+                    Console.Write("Введите пароль: ");
+                    client.Password = Console.ReadLine();
+                    Console.Write("Введите ФИО:");
+                    client.FName = Console.ReadLine();
+                    client.MName = Console.ReadLine();
+                    client.SName = Console.ReadLine();
 
-            //        break;
 
-            //    case "Регистрация":
-            //        Console.Write("Введите емейл: ");
-            //        client.Email = Console.ReadLine();
-            //        Console.Write("Введите пароль: ");
-            //        client.Password = Console.ReadLine();
-            //        Console.Write("Введите ФИО:");
-            //        client.FName = Console.ReadLine();
-            //        client.MName = Console.ReadLine();
-            //        client.SName = Console.ReadLine();
-            //        service.RegisterClient(client);
-            //        break;
+                    Gender gender;
+  for (gender = Gender.Female; gender <=Gender.Male; gender++)
+                    {
+                        Console.WriteLine("{0}. {1}",
+                            (int)gender, gender);
+                    }
 
-            //    case "Выход":
-            //        Console.WriteLine("Завершение процесса.");
-            //        break;
-            //}
+                    Console.Write(": ");
+                    string chGender = Console.ReadLine();
+
+                    if (Enum.IsDefined(typeof(Gender), chGender))
+                    {
+                        client.Gender =
+                            (Gender)Enum.Parse(typeof(Gender), chGender);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Укаэите корректно пол");
+                    }
+
+                     service.RegisterClient(client);
+                    break;
+
+                case "Выход":
+                    Console.WriteLine("Завершение процесса.");
+                    break;
+            }
 
             Console.ReadKey();
         }

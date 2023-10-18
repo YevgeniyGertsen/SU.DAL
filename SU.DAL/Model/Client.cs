@@ -41,6 +41,7 @@ namespace SU.DAL.Model
             }
         }
 
+        public int? Gender { get; set; }
         public string Iin { get; set; }
         public string PathPhoto { get; set; }
         public string  PhoneNumber { get; set; }
