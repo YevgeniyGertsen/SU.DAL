@@ -29,7 +29,7 @@ namespace SU.BLL
                 return ("Возникла ошибка", false);
         }
 
-        public (string message, bool result) AuthClient(ClientDTO client)
+        public ClientDTO AuthClient(ClientDTO client)
         {
 
             var clients = repo.GetAll().ListData;
@@ -37,14 +37,16 @@ namespace SU.BLL
                 .FirstOrDefault(f => f.Email == client.Email
                 && f.Password == client.Password);
 
-            if (result.IsSeccess == true)
-            {
-                return ("", true);
-            }
-            else
-            {
-                return (result?.Exception.Message, result.IsSeccess);
-            }
+            return _iMapper.Map<ClientDTO>(result.Data);
+
+            //if (result.IsSeccess == true)
+            //{
+            //    return ("", true);
+            //}
+            //else
+            //{
+            //    return (result?.Exception.Message, result.IsSeccess);
+            //}
         }
     }
 }

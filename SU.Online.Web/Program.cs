@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace SU.Online.Web
 {
@@ -30,50 +31,80 @@ namespace SU.Online.Web
             switch (input)
             {
                 case "Авторизация":
-                    Console.Write("Введите емейл: ");
-                    client.Email = Console.ReadLine();
-                    Console.Write("Введите пароль: ");
-                    client.Password = Console.ReadLine();
-                    if (service.AuthClient(client).result)
                     {
-                        Console.Clear();
-                        Console.WriteLine("Авторизация прошла успешно. Добро пожаловать {0}", client.ShortName);
-                    }
+                        Console.Write("Введите емейл: ");
+                        client.Email = Console.ReadLine();
+                        Console.Write("Введите пароль: ");
+                        client.Password = Console.ReadLine();
+                        client = service.AuthClient(client);
+                        if (client != null)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Авторизация прошла успешно. Добро пожаловать {0}", client.ShortName);
 
+
+
+
+
+                            Console.WriteLine("1. Отобразить счета");
+                            Console.WriteLine("2. Содать счет");
+                            
+                            int ch = 0;
+                            ch = Int32.Parse(Console.ReadLine());
+                            ServiceAcount acc = 
+                                new ServiceAcount(path);
+                            acc.RegisterDeligeteEX(ShowMessage);
+                            switch (ch)
+                            {
+                                case 1:
+                                    {
+                                        foreach (var item in acc.GetClientAcount(client.Id))
+                                        {
+                                            Console.WriteLine("-> {0}\t{1}", item.Number, item.Balance);
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
                     break;
 
                 case "Регистрация":
-                    Console.Write("Введите емейл: ");
-                    client.Email = Console.ReadLine();
-                    Console.Write("Введите пароль: ");
-                    client.Password = Console.ReadLine();
-                    Console.Write("Введите ФИО:");
-                    client.FName = Console.ReadLine();
-                    client.MName = Console.ReadLine();
-                    client.SName = Console.ReadLine();
-
-
-                    Gender gender;
-  for (gender = Gender.Female; gender <=Gender.Male; gender++)
                     {
-                        Console.WriteLine("{0}. {1}",
-                            (int)gender, gender);
-                    }
+                        Console.Write("Введите емейл: ");
+                        client.Email = Console.ReadLine();
+                        Console.Write("Введите пароль: ");
+                        client.Password = Console.ReadLine();
+                        Console.Write("Введите ФИО:");
+                        client.FName = Console.ReadLine();
+                        client.MName = Console.ReadLine();
+                        client.SName = Console.ReadLine();
 
-                    Console.Write(": ");
-                    string chGender = Console.ReadLine();
 
-                    if (Enum.IsDefined(typeof(Gender), chGender))
-                    {
-                        client.Gender =
-                            (Gender)Enum.Parse(typeof(Gender), chGender);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Укаэите корректно пол");
-                    }
+                        Gender gender;
+                        for (gender = Gender.Female; gender <= Gender.Male; gender++)
+                        {
+                            Console.WriteLine("{0}. {1}",
+                                (int)gender, gender);
+                        }
 
-                     service.RegisterClient(client);
+                        Console.Write(": ");
+                        string chGender = Console.ReadLine();
+
+                        if (Enum.IsDefined(typeof(Gender), chGender))
+                        {
+                            client.Gender =
+                                (Gender)Enum.Parse(typeof(Gender), chGender);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Укаэите корректно пол");
+                        }
+
+                        service.RegisterClient(client);
+                    }
                     break;
 
                 case "Выход":
@@ -83,7 +114,16 @@ namespace SU.Online.Web
 
             Console.ReadKey();
         }
+
+        public static void ShowMessage(bool isError, string Message)
+        {
+            MessageBox.Show(Message, "Возникла ошибка",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
     }
+
+
 
     public class Money
     {
